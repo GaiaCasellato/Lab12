@@ -30,9 +30,7 @@ class Model:
         sales_volume= {}
         for nodo in self._grafo.nodes():
             volume = sum(data["weight"] for _,_, data in self._grafo.edges(nodo, data = True))
-            print(volume)
             sales_volume[nodo] = volume
-            sorted(sales_volume, key=lambda x: x[1], reverse=True)
         return sales_volume
 
 

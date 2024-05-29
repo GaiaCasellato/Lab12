@@ -27,7 +27,6 @@ class Controller:
 
 
     def handle_graph(self, e):
-        print("Sono entrato qui")
         self._view.txt_result.controls.clear()
         self._model.creaGrafo(self._view.ddcountry.value, self._view.ddyear.value)
         self._view.txt_result.controls.append(
@@ -36,9 +35,12 @@ class Controller:
         self._view.update_page()
 
     def handle_volume(self, e):
-        volumi_sortati = self._model.calculate_sales_volume()
+        self._view.txtOut2.controls.clear()
+        volumi = self._model.calculate_sales_volume()
+        volumi_sortati = sorted(volumi.items(), key=lambda x: x[1], reverse=True)
         for retailer, volume in volumi_sortati:
-            self._view.txt_result.controls.append(ft.Text(f"{retailer} --> {volume}"))
+            if volume != 0:
+                self._view.txtOut2.controls.append(ft.Text(f"{retailer.Retailer_name} --> {volume}"))
         self._view.update_page()
 
     def handle_path(self, e):
