@@ -14,15 +14,32 @@ class Controller:
     def fillDD(self):
         pass
 
+    def fillDDCountries(self):
+        countries = self._model.getCountries()
+        for country in countries:
+            self._view.ddcountry.options.append(ft.dropdown.Option(country))
+        self._view.update_page()
+
+
+
+
+
+
 
     def handle_graph(self, e):
-        pass
+        print("Sono entrato qui")
+        self._view.txt_result.controls.clear()
+        self._model.creaGrafo(self._view.ddcountry.value, self._view.ddyear.value)
+        self._view.txt_result.controls.append(
+            ft.Text(f"Numero di vertici :{self._model.getNumNodes()} Numero di archi:{self._model.getNumEdges()}"))
 
-
+        self._view.update_page()
 
     def handle_volume(self, e):
-        pass
-
+        volumi_sortati = self._model.calculate_sales_volume()
+        for retailer, volume in volumi_sortati:
+            self._view.txt_result.controls.append(ft.Text(f"{retailer} --> {volume}"))
+        self._view.update_page()
 
     def handle_path(self, e):
         pass
