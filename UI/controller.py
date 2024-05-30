@@ -50,6 +50,8 @@ class Controller:
             self._view.create_alert("Il numero inserito è troppo piccolo coglione.")
             return
         ottimo, peso= self._model.getPercorsoPesoMax(numero)
-        self._view.txtOut3.controls.append(ft.Text(f"Peso cammino massimo : {peso} è l'ottimo è {ottimo}"))
+        self._view.txtOut3.controls.append(ft.Text(f"Peso cammino massimo : {peso}."))
+        for i in range(len(ottimo)-1):
+            self._view.txtOut3.controls.append(ft.Text(f"{ottimo[i].Retailer_name} --->{ottimo[i+1].Retailer_name} "))
         self._view.update_page()
 
