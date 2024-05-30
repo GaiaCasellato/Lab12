@@ -1,3 +1,5 @@
+import copy
+
 import networkx as nx
 
 from database.DAO import DAO
@@ -8,6 +10,8 @@ class Model:
         self._grafo = nx.Graph()
         self._idMap = {}
         sales_volume = {}
+        self.ottimo = []
+        self.pesoMax = 0
 
     def getCountries(self):
         return DAO.getAllCountries()
@@ -39,3 +43,38 @@ class Model:
 
     def getNumEdges(self):
         return len(self._grafo.edges)
+
+    def getPercorsoPesoMax(self,N):
+        self.ottimo = []
+        self.pesoMax = 0
+        parziale = []
+        for nodo in self.nodi:
+            parziale = [nodo]
+            self.ricorsione(parziale,N)
+        return self.ottimo, self.pesoMax
+
+
+
+    def ricorsione(self,parziale, N): # N è il numero di archi inseriti dall'utente minimo 2
+        # condizione terminale è che parziale sia di lunghezza N , e che il primo nodo coincida con l'ultimo
+        if len(parziale) > N:
+            return
+        if len(parziale) == N and parziale[0] == parziale[-1]:
+            if len(parziale[1:-1]) == len(set(parziale[1:-1])):
+                if self.calcolaPeso(parziale) > self.pesoMax:
+                    self.ottimo = copy.deepcopy(parziale)
+                    self.pesoMax = self.calcolaPeso(self.ottimo)
+                    return
+
+        # vertici intermedi non devono essere ripetuti
+        for v in self._grafo.neighbors(parziale[-1]):
+                parziale.append(v)
+                self.ricorsione(parziale,N)
+                parziale.pop()
+            #La somma dei pesi degli archi percorsi deve essere massima.
+
+    def calcolaPeso(self,lista):
+        peso = 0
+        for i in range(len(lista)-1):
+            peso += self._grafo[lista[i]][lista[i+1]]["weight"]
+        return peso

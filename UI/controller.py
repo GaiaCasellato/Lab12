@@ -44,4 +44,12 @@ class Controller:
         self._view.update_page()
 
     def handle_path(self, e):
-        pass
+        self._view.txtOut3.controls.clear()
+        numero = int(self._view.txtN.value)
+        if numero <= 1:
+            self._view.create_alert("Il numero inserito è troppo piccolo coglione.")
+            return
+        ottimo, peso= self._model.getPercorsoPesoMax(numero)
+        self._view.txtOut3.controls.append(ft.Text(f"Peso cammino massimo : {peso} è l'ottimo è {ottimo}"))
+        self._view.update_page()
+
